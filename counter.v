@@ -1,18 +1,22 @@
 module binarycounter (
     input wclk, wrst_n, winc, wfull,
-    output 
+    output reg[4:0]out
 );
-    always@(posedge clk)
+wire[4:0]b2gray ;
+reg[4:0]bnext;
+    always@(posedge wclk or negedge wrst_n)
     begin
-        if(~(rst_n)|(q==4'b1111))
+        if(~(wrst_n))
         begin
-            out<=4'b0000;
+            out<=5'b00000;
         end
-        else
+        else if(winc && !wfull)
         begin
             out<=out+1;
         end
     end
+assign b2gray= (out)^(out>>1);
+    
 endmodule
 
 
